@@ -1,5 +1,4 @@
 import { Link, Outlet, Route, Routes } from 'react-router-dom';
-import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import sortByField from './shared/sortByField';
@@ -14,6 +13,8 @@ import NotFoundPage from './pages/NotFoundPage';
 const App = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
+
+  
 
   useEffect(() => {
     axios
@@ -47,11 +48,15 @@ const App = () => {
     return (
       <Routes>
         <Route path="/" element={
-          <header>
-            <Link to="/">На головну </Link>
-            <span>БРСМ нафта ціни </span>
-            <Outlet />
-          </header>
+          <>
+            <header>
+              <Link to="/">На головну </Link>
+              <span>БРСМ нафта </span>
+            </header>
+            <div className='feed'>
+              <Outlet />
+            </div>
+          </>
         }>
           <Route index element={<HomePage data={data} />} />
 
