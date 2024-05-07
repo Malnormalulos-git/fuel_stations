@@ -1,10 +1,13 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useOutletContext, useParams } from "react-router-dom";
 
 const CityPage = ({ data }) => {
   const { region, city } = useParams();
   const addresses = data[region][city];
 
   const navigate = useNavigate();
+
+  const { setPreviousPage } = useOutletContext();
+  setPreviousPage(`/${encodeURIComponent(region)}`);
 
   if (!addresses){
     navigate('/not_found');

@@ -14,7 +14,7 @@ const App = () => {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
-  
+  const [previousPage, setPreviousPage] = useState(null);
 
   useEffect(() => {
     axios
@@ -51,10 +51,13 @@ const App = () => {
           <>
             <header>
               <Link to="/">На головну </Link>
+              {previousPage && (
+                <Link to={previousPage}>Назад</Link>
+              )}
               <span>БРСМ нафта </span>
             </header>
             <div className='feed'>
-              <Outlet />
+              <Outlet context={ { previousPage, setPreviousPage } } />
             </div>
           </>
         }>
