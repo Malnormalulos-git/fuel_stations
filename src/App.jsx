@@ -1,20 +1,31 @@
-import { Outlet, Route, Routes } from 'react-router-dom'
-import './App.css'
+import { Link, Outlet, Route, Routes } from 'react-router-dom';
+import './App.css';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import sortByField from './shared/sortByField';
+import sortByKeys from './shared/sortByKeys';
+import HomePage from './pages/HomePage';
+import RegionPage from './pages/RegionPage';
+import CityPage from './pages/CityPage';
+import StationPage from './pages/StationPage';
+import groupByFields from './shared/groupByFields';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
-
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    axios.get('https://td4.brsm-nafta.com/api/v2/Mobile/get_full_ffs')
-      .then(response => {
-        setData(sortByField(response.data, 'region'));
+    axios
+      .get('https://td4.brsm-nafta.com/api/v2/Mobile/get_full_ffs')
+      .then((response) => {
+        const groupedData = sortByKeys(
+                              groupByFields(
+                                sortByField(response.data, 'city'), ['region', 'city', 'address']));
+                                // Grouping by region, city, address and in alphabetical order
+        setData(groupedData);
       })
-      .catch(error => {
+      .catch((error) => {
         setError(error);
       });
   }, []);
@@ -25,26 +36,35 @@ const App = () => {
         <h2>Error</h2>
         <h3>{error.message}</h3>
       </div>
-  );
+    );
   } else if (!data) {
     return (
-        <div>
-          <h2>Loading...</h2>
-        </div>
-  );
+      <div>
+        <h2>Loading...</h2>
+      </div>
+    );
   } else {
     return (
       <Routes>
-        <Route path='/' element={<div> something shared to all pages <Outlet/></div>}>
-          <Route index element={<p>index</p>} />
+        <Route path="/" element={
+          <header>
+            <Link to="/">На головну </Link>
+            <span>БРСМ нафта ціни </span>
+            <Outlet />
+          </header>
+        }>
+          <Route index element={<HomePage data={data} />} />
 
-          <Route path='test' element={<p>test</p>} />
+          <Route path="/:region" element={<RegionPage data={data} />} />
+          <Route path="/:region/:city" element={<CityPage data={data} />} />
+          <Route path="/:region/:city/:address" element={<StationPage data={data} />} />
 
-          <Route path='*' element={<p>404 - Not found</p>} />
+          <Route path="/not_found" element={<NotFoundPage/>} />
+          <Route path="*" element={<NotFoundPage/>} />
         </Route>
       </Routes>
-    )
+    );
   }
-}
+};
 
-export default App
+export default App;
