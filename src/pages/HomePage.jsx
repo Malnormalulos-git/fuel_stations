@@ -4,7 +4,7 @@ const HomePage = ({ data }) => (
   <>
     <h2>Оберіть регіон:</h2>
     {Object.keys(data).map(region => (<>
-      <Link key={region} to={`/${region}`}>
+      <Link key={region} to={`/${encodeURIComponent(region)}`}>
         {region}
       </Link>
       <br/>

@@ -15,7 +15,7 @@ const CityPage = ({ data }) => {
         <h3>Населений пункт: {city}</h3>
         <h4>Оберіть вулицю:</h4>
         {Object.keys(addresses).map(address => (<>
-          <Link key={address} to={`/${region}/${city}/${address}`}>
+          <Link key={address} to={`/${encodeURIComponent(region)}/${encodeURIComponent(city)}/${encodeURIComponent(address)}`}>
             {address}
           </Link>
           <br/>
