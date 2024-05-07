@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-const FuelPricesTable = () => {
+const FuelPricesTable = ({ fuels }) => {
   const [fuelPrices, setFuelPrices] = useState([]);
   const [error, setError] = useState(null);
 
@@ -15,8 +15,6 @@ const FuelPricesTable = () => {
         setError(error);
       });
   }, []);
-
-  console.log(fuelPrices)
 
   if (error) {
     return (
@@ -41,7 +39,7 @@ const FuelPricesTable = () => {
           </tr>
         </thead>
         <tbody>
-          {fuelPrices.map((fuel) => (
+          {fuelPrices.filter(fuel => fuels.includes(fuel.fuelMobId)).map((fuel) => (
             <tr key={fuel.fuelMobId}>
               <td>{fuel.name}</td>
               <td>{fuel.price}</td>
