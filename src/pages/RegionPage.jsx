@@ -7,10 +7,7 @@ const RegionPage = ({ data }) => {
   const navigate = useNavigate();
 
   const { previousPage, setPreviousPage } = useOutletContext();
-
-  if (previousPage){
-    setPreviousPage(null);
-  }
+  setPreviousPage("/");
 
   if (!cities){
     navigate('/not_found');

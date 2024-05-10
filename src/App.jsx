@@ -10,7 +10,7 @@ import StationPage from './pages/StationPage';
 import groupByFields from './shared/groupByFields';
 import NotFoundPage from './pages/NotFoundPage';
 
-const App = () => {
+const App = () => {  
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -50,7 +50,6 @@ const App = () => {
         <Route path="/" element={
           <>
             <header>
-              <Link to="/">На головну </Link>
               {previousPage && (
                 <Link to={previousPage}>Назад</Link>
               )}
